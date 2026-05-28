@@ -5,25 +5,36 @@ body {
   height: 100%;
   background: #fff;
   font-family: "Jost", sans-serif;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 .container {
-  width: 100vw;
-  height: 100vh;
-  padding: 18px 22px 16px;
-  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 20px 24px 22px 24px;
+  overflow: hidden;
   display: flex;
   align-items: stretch;
-  justify-content: center;
+  justify-content: stretch;
 }
 
 .ups-screen {
   width: 100%;
   height: 100%;
+  min-width: 0;
+  min-height: 0;
   display: grid;
   grid-template-rows: auto auto 1fr;
   gap: 14px;
   color: #000;
+  overflow: hidden;
 }
 
 .refresh {
@@ -31,6 +42,7 @@ body {
   font-size: 13px;
   line-height: 1;
   color: #666;
+  padding-right: 2px;
 }
 
 .topbar {
@@ -38,10 +50,12 @@ body {
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
+  min-width: 0;
 }
 
 .title-block {
   min-width: 0;
+  padding-right: 6px;
 }
 
 .title {
@@ -70,6 +84,7 @@ body {
   font-weight: 900;
   text-transform: uppercase;
   background: #fff;
+  max-width: 100%;
 }
 
 .status-good {
@@ -90,7 +105,9 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1.65fr) minmax(220px, 0.85fr);
   gap: 14px;
+  min-width: 0;
   min-height: 0;
+  overflow: hidden;
 }
 
 .battery-card,
@@ -99,6 +116,8 @@ body {
   border: 3px solid #000;
   background: #fff;
   box-sizing: border-box;
+  min-width: 0;
+  min-height: 0;
 }
 
 .battery-card {
@@ -106,7 +125,7 @@ body {
   padding: 18px 20px 14px;
   display: grid;
   grid-template-rows: auto 1fr auto;
-  min-height: 0;
+  overflow: hidden;
 }
 
 .section-label {
@@ -122,22 +141,23 @@ body {
   display: flex;
   align-items: center;
   min-height: 0;
-  padding: 8px 0;
+  padding: 8px 4px 8px 0;
+  overflow: hidden;
 }
 
 .battery-shape {
   position: relative;
-  width: 100%;
+  width: calc(100% - 18px);
   height: 110px;
   border: 4px solid #000;
   border-radius: 22px;
   background: #fff;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .battery-tip {
   position: absolute;
-  right: -16px;
+  right: -14px;
   top: 37px;
   width: 12px;
   height: 36px;
@@ -193,7 +213,9 @@ body {
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 14px;
+  min-width: 0;
   min-height: 0;
+  overflow: hidden;
 }
 
 .info-card {
@@ -202,7 +224,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 0;
+  overflow: hidden;
 }
 
 .info-card.emphasis {
@@ -220,7 +242,11 @@ body {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
+  min-width: 0;
   min-height: 0;
+  overflow: hidden;
+  padding-right: 2px;
+  padding-bottom: 2px;
 }
 
 .stat-pill {
@@ -229,7 +255,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 0;
+  overflow: hidden;
 }
 
 .stat-name {
@@ -251,7 +277,7 @@ body {
 
 @media (max-width: 900px) {
   .container {
-    padding: 14px 16px 14px;
+    padding: 16px 18px 18px 18px;
   }
 
   .title {
