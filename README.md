@@ -23,12 +23,17 @@ To update the plugin on your InkyPi device:
    ```bash
    git pull origin main && \
    if [ -d peanut_ups_status ]; then \
-     shopt -s dotglob nullglob && \
-     mv peanut_ups_status/* . && \
-     rmdir peanut_ups_status; \
+     rsync -a peanut_ups_status/ ./ && \
+     rm -rf peanut_ups_status; \
    fi && \
    sudo systemctl restart inkypi.service
    ```
+
+If you don’t see your changes after updating:
+
+- Confirm you are in the correct plugin folder.
+- Clear your browser cache or hard refresh the InkyPi web UI.
+- Check the InkyPi logs for any plugin errors.
 
 If you don’t see your changes after updating:
 
