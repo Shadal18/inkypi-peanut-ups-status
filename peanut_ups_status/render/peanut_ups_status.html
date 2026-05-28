@@ -1,72 +1,78 @@
 {% extends "plugin.html" %} {% block head %} {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/peanut_ups_status.css') }}" />
 {% endblock %} {% block content %}
-<div class="ups-dashboard">
+<div class="ups-screen">
   {% if plugin_settings.displayRefreshTime == "true" %}
-  <div class="last-refresh">Last refresh: {{ last_refresh_time }}</div>
+  <div class="refresh">Updated {{ last_refresh_time }}</div>
   {% endif %}
 
-  <div class="header">
-    <div class="title">{{ title }}</div>
-    <div class="subtitle">
-      {% if ups.manufacturer and ups.manufacturer != "—" %}{{ ups.manufacturer }} {% endif %}{{ ups.name }}
+  <header class="topbar">
+    <div class="title-block">
+      <div class="title">{{ title }}</div>
+      <div class="subtitle">
+        {% if ups.manufacturer and ups.manufacturer != "—" %}{{ ups.manufacturer }} {% endif %}{{ ups.name }}
+      </div>
     </div>
-    <div class="status-wrap">
-      <div class="status-pill status-{{ ups.status_class }}">{{ ups.status_label }}</div>
-    </div>
-  </div>
 
-  <div class="hero-grid">
-    <div class="battery-panel">
-      <div class="panel-label">Battery</div>
-      <div class="battery-row">
-        <div class="battery-shell">
-          <div class="battery-cap"></div>
+    <div class="status-chip status-{{ ups.status_class }}">{{ ups.status_label }}</div>
+  </header>
+
+  <section class="main-grid">
+    <div class="battery-card">
+      <div class="section-label">Battery Charge</div>
+
+      <div class="battery-hero">
+        <div class="battery-shape">
+          <div class="battery-tip"></div>
           <div
             class="battery-fill battery-{{ ups.battery_class }}"
             style="width: {{ ups.battery_percent_value }}%;"
           ></div>
-          <div class="battery-text">{{ ups.battery_pct }}</div>
+          <div class="battery-percent">{{ ups.battery_pct }}</div>
         </div>
       </div>
 
+      <div class="battery-scale">
+        <span>0%</span>
+        <span>25</span>
+        <span>50</span>
+        <span>75</span>
+        <span>100%</span>
+      </div>
+    </div>
+
+    <div class="side-stack">
       {% if plugin_settings.show_runtime != "hide" %}
-      <div class="battery-meta">Estimated runtime: {{ ups.runtime_pretty }}</div>
-      {% endif %}
-    </div>
-
-    <div class="summary-stack">
-      {% if plugin_settings.show_load != "hide" %}
-      <div class="summary-card">
-        <div class="panel-label">Load</div>
-        <div class="summary-value">{{ ups.load_pct }}</div>
+      <div class="info-card emphasis">
+        <div class="section-label">Runtime</div>
+        <div class="big-value">{{ ups.runtime_pretty }}</div>
+      </div>
+      {% endif %} {% if plugin_settings.show_load != "hide" %}
+      <div class="info-card">
+        <div class="section-label">Load</div>
+        <div class="big-value">{{ ups.load_pct }}</div>
       </div>
       {% endif %}
-
-      <div class="summary-card">
-        <div class="panel-label">Status</div>
-        <div class="summary-value summary-status">{{ ups.status_label }}</div>
-      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="voltage-grid">
+  <section class="stats-row">
     {% if plugin_settings.show_input_voltage != "hide" %}
-    <div class="mini-card">
-      <div class="panel-label">Input</div>
-      <div class="mini-value">{{ ups.input_v }}</div>
+    <div class="stat-pill">
+      <span class="stat-name">Input</span>
+      <span class="stat-value">{{ ups.input_v }}</span>
     </div>
     {% endif %} {% if plugin_settings.show_output_voltage != "hide" %}
-    <div class="mini-card">
-      <div class="panel-label">Output</div>
-      <div class="mini-value">{{ ups.output_v }}</div>
+    <div class="stat-pill">
+      <span class="stat-name">Output</span>
+      <span class="stat-value">{{ ups.output_v }}</span>
     </div>
     {% endif %} {% if plugin_settings.show_battery_voltage != "hide" %}
-    <div class="mini-card">
-      <div class="panel-label">Battery V</div>
-      <div class="mini-value">{{ ups.battery_v }}</div>
+    <div class="stat-pill">
+      <span class="stat-name">Battery V</span>
+      <span class="stat-value">{{ ups.battery_v }}</span>
     </div>
     {% endif %}
-  </div>
+  </section>
 </div>
 {% endblock %}

@@ -1,145 +1,148 @@
 html,
 body {
   margin: 0;
+  width: 100%;
   height: 100%;
-}
-
-body {
+  background: #fff;
   font-family: "Jost", sans-serif;
-  background: white;
 }
 
 .container {
   width: 100vw;
   height: 100vh;
-  padding: 18px 20px;
+  padding: 18px 22px 16px;
   box-sizing: border-box;
   display: flex;
   align-items: stretch;
   justify-content: center;
 }
 
-.ups-dashboard {
+.ups-screen {
   width: 100%;
   height: 100%;
-  color: #000;
   display: grid;
   grid-template-rows: auto auto 1fr;
   gap: 14px;
+  color: #000;
 }
 
-.last-refresh {
+.refresh {
   text-align: right;
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1;
   color: #666;
-  margin-bottom: -4px;
 }
 
-.header {
-  text-align: center;
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.title-block {
+  min-width: 0;
 }
 
 .title {
   font-size: 32px;
-  line-height: 1;
-  font-weight: 800;
-  margin-bottom: 6px;
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.03em;
 }
 
 .subtitle {
+  margin-top: 6px;
   font-size: 16px;
   line-height: 1.1;
   font-weight: 700;
-  color: #444;
+  color: #4d4d4d;
 }
 
-.status-wrap {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-.status-pill {
+.status-chip {
+  flex-shrink: 0;
+  align-self: center;
   border: 3px solid #000;
   border-radius: 999px;
-  padding: 8px 20px;
+  padding: 10px 18px;
   font-size: 18px;
-  font-weight: 800;
+  line-height: 1;
+  font-weight: 900;
   text-transform: uppercase;
   background: #fff;
 }
 
 .status-good {
-  color: #000;
-  background: #fff;
+  background: #dff3ea;
 }
 
 .status-warning {
-  color: #000;
-  background: #ffd84d;
+  background: #ffe28a;
 }
 
 .status-danger {
-  color: #fff;
   background: #d62828;
+  color: #fff;
   border-color: #d62828;
 }
 
-.hero-grid {
+.main-grid {
   display: grid;
-  grid-template-columns: 1.35fr 0.85fr;
+  grid-template-columns: minmax(0, 1.65fr) minmax(220px, 0.85fr);
   gap: 14px;
   min-height: 0;
 }
 
-.battery-panel,
-.summary-card,
-.mini-card {
+.battery-card,
+.info-card,
+.stat-pill {
   border: 3px solid #000;
-  border-radius: 18px;
   background: #fff;
   box-sizing: border-box;
 }
 
-.battery-panel {
-  padding: 16px 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.battery-card {
+  border-radius: 24px;
+  padding: 18px 20px 14px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 0;
 }
 
-.panel-label {
+.section-label {
   font-size: 14px;
+  line-height: 1;
   font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: #555;
-  margin-bottom: 10px;
 }
 
-.battery-row {
+.battery-hero {
   display: flex;
   align-items: center;
+  min-height: 0;
+  padding: 8px 0;
 }
 
-.battery-shell {
+.battery-shape {
   position: relative;
   width: 100%;
-  height: 72px;
+  height: 110px;
   border: 4px solid #000;
-  border-radius: 14px;
-  overflow: visible;
+  border-radius: 22px;
   background: #fff;
+  overflow: visible;
 }
 
-.battery-cap {
+.battery-tip {
   position: absolute;
-  right: -12px;
-  top: 22px;
-  width: 10px;
-  height: 24px;
+  right: -16px;
+  top: 37px;
+  width: 12px;
+  height: 36px;
   background: #000;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 6px 6px 0;
 }
 
 .battery-fill {
@@ -147,7 +150,8 @@ body {
   left: 0;
   top: 0;
   bottom: 0;
-  border-radius: 8px 0 0 8px;
+  max-width: 100%;
+  border-radius: 16px 0 0 16px;
 }
 
 .battery-good {
@@ -155,91 +159,128 @@ body {
 }
 
 .battery-warning {
-  background: #ffd84d;
+  background: #f4c542;
 }
 
 .battery-danger {
   background: #d62828;
 }
 
-.battery-text {
+.battery-percent {
   position: absolute;
   inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 34px;
+  font-size: 48px;
+  line-height: 1;
   font-weight: 900;
+  letter-spacing: -0.04em;
   z-index: 2;
 }
 
-.battery-meta {
-  margin-top: 12px;
-  font-size: 18px;
+.battery-scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 14px;
   font-weight: 700;
-  color: #333;
+  color: #666;
+  padding-right: 8px;
 }
 
-.summary-stack {
+.side-stack {
   display: grid;
   grid-template-rows: 1fr 1fr;
   gap: 14px;
   min-height: 0;
 }
 
-.summary-card {
+.info-card {
+  border-radius: 22px;
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-}
-
-.summary-value {
-  font-size: 34px;
-  line-height: 1;
-  font-weight: 900;
-}
-
-.summary-status {
-  font-size: 24px;
-  text-transform: uppercase;
-}
-
-.voltage-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  justify-content: space-between;
   min-height: 0;
 }
 
-.mini-card {
-  padding: 14px 16px;
+.info-card.emphasis {
+  background: #f4f4f4;
+}
+
+.big-value {
+  font-size: 40px;
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  min-height: 0;
+}
+
+.stat-pill {
+  border-radius: 18px;
+  padding: 12px 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  min-height: 0;
 }
 
-.mini-value {
-  font-size: 26px;
+.stat-name {
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.stat-value {
+  font-size: 24px;
   line-height: 1;
   font-weight: 900;
+  letter-spacing: -0.02em;
 }
 
 @media (max-width: 900px) {
+  .container {
+    padding: 14px 16px 14px;
+  }
+
   .title {
     font-size: 28px;
   }
 
-  .battery-shell {
-    height: 64px;
+  .status-chip {
+    font-size: 16px;
+    padding: 8px 14px;
   }
 
-  .battery-text,
-  .summary-value {
-    font-size: 28px;
+  .battery-shape {
+    height: 92px;
   }
 
-  .mini-value {
-    font-size: 22px;
+  .battery-tip {
+    top: 30px;
+    height: 30px;
+  }
+
+  .battery-percent {
+    font-size: 40px;
+  }
+
+  .big-value {
+    font-size: 32px;
+  }
+
+  .stat-value {
+    font-size: 20px;
   }
 }

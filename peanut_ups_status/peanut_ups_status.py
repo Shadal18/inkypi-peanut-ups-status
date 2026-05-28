@@ -175,7 +175,7 @@ class PeaNUT(BasePlugin):
         if battery_numeric <= 50:
             return "warning"
         return "good"
-        
+
     def format_status(self, code):
         code = (code or "").upper()
         if "OB" in code:
