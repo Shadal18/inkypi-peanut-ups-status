@@ -144,6 +144,12 @@ class PeaNUT(BasePlugin):
 
         battery_numeric = to_float(battery_charge)
         status_class = self.status_class(status_code, battery_numeric)
+        battery_class = self.battery_class(battery_numeric)
+
+        if battery_numeric is None:
+            battery_percent_value = 0
+        else:
+            battery_percent_value = max(0, min(100, round(battery_numeric)))
 
         return {
             "name": ups_name,
@@ -151,7 +157,9 @@ class PeaNUT(BasePlugin):
             "status_code": status_code,
             "status_label": status_label,
             "status_class": status_class,
+            "battery_class": battery_class,
             "battery_pct": battery_pct,
+            "battery_percent_value": battery_percent_value,
             "runtime_pretty": runtime_pretty,
             "load_pct": load_pct,
             "input_v": input_v,
@@ -159,6 +167,15 @@ class PeaNUT(BasePlugin):
             "battery_v": battery_v,
         }
 
+    def battery_class(self, battery_numeric):
+        if battery_numeric is None:
+            return "warning"
+        if battery_numeric <= 25:
+            return "danger"
+        if battery_numeric <= 50:
+            return "warning"
+        return "good"
+        
     def format_status(self, code):
         code = (code or "").upper()
         if "OB" in code:

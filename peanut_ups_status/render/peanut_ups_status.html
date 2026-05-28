@@ -11,42 +11,60 @@
     <div class="subtitle">
       {% if ups.manufacturer and ups.manufacturer != "—" %}{{ ups.manufacturer }} {% endif %}{{ ups.name }}
     </div>
+    <div class="status-wrap">
+      <div class="status-pill status-{{ ups.status_class }}">{{ ups.status_label }}</div>
+    </div>
   </div>
 
-  <div class="status-wrap">
-    <div class="status-pill status-{{ ups.status_class }}">{{ ups.status_label }}</div>
+  <div class="hero-grid">
+    <div class="battery-panel">
+      <div class="panel-label">Battery</div>
+      <div class="battery-row">
+        <div class="battery-shell">
+          <div class="battery-cap"></div>
+          <div
+            class="battery-fill battery-{{ ups.battery_class }}"
+            style="width: {{ ups.battery_percent_value }}%;"
+          ></div>
+          <div class="battery-text">{{ ups.battery_pct }}</div>
+        </div>
+      </div>
+
+      {% if plugin_settings.show_runtime != "hide" %}
+      <div class="battery-meta">Estimated runtime: {{ ups.runtime_pretty }}</div>
+      {% endif %}
+    </div>
+
+    <div class="summary-stack">
+      {% if plugin_settings.show_load != "hide" %}
+      <div class="summary-card">
+        <div class="panel-label">Load</div>
+        <div class="summary-value">{{ ups.load_pct }}</div>
+      </div>
+      {% endif %}
+
+      <div class="summary-card">
+        <div class="panel-label">Status</div>
+        <div class="summary-value summary-status">{{ ups.status_label }}</div>
+      </div>
+    </div>
   </div>
 
-  <div class="metrics-grid">
-    {% if plugin_settings.show_battery != "hide" %}
-    <div class="metric-card">
-      <div class="metric-label">Battery</div>
-      <div class="metric-value">{{ ups.battery_pct }}</div>
-    </div>
-    {% endif %} {% if plugin_settings.show_runtime != "hide" %}
-    <div class="metric-card">
-      <div class="metric-label">Runtime</div>
-      <div class="metric-value">{{ ups.runtime_pretty }}</div>
-    </div>
-    {% endif %} {% if plugin_settings.show_load != "hide" %}
-    <div class="metric-card">
-      <div class="metric-label">Load</div>
-      <div class="metric-value">{{ ups.load_pct }}</div>
-    </div>
-    {% endif %} {% if plugin_settings.show_input_voltage != "hide" %}
-    <div class="metric-card">
-      <div class="metric-label">Input</div>
-      <div class="metric-value">{{ ups.input_v }}</div>
+  <div class="voltage-grid">
+    {% if plugin_settings.show_input_voltage != "hide" %}
+    <div class="mini-card">
+      <div class="panel-label">Input</div>
+      <div class="mini-value">{{ ups.input_v }}</div>
     </div>
     {% endif %} {% if plugin_settings.show_output_voltage != "hide" %}
-    <div class="metric-card">
-      <div class="metric-label">Output</div>
-      <div class="metric-value">{{ ups.output_v }}</div>
+    <div class="mini-card">
+      <div class="panel-label">Output</div>
+      <div class="mini-value">{{ ups.output_v }}</div>
     </div>
     {% endif %} {% if plugin_settings.show_battery_voltage != "hide" %}
-    <div class="metric-card">
-      <div class="metric-label">Battery V</div>
-      <div class="metric-value">{{ ups.battery_v }}</div>
+    <div class="mini-card">
+      <div class="panel-label">Battery V</div>
+      <div class="mini-value">{{ ups.battery_v }}</div>
     </div>
     {% endif %}
   </div>
