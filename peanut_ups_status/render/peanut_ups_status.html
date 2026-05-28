@@ -1,0 +1,54 @@
+{% extends "plugin.html" %} {% block head %} {{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/peanut_ups_status.css') }}" />
+{% endblock %} {% block content %}
+<div class="ups-dashboard">
+  {% if plugin_settings.displayRefreshTime == "true" %}
+  <div class="last-refresh">Last refresh: {{ last_refresh_time }}</div>
+  {% endif %}
+
+  <div class="header">
+    <div class="title">{{ title }}</div>
+    <div class="subtitle">
+      {% if ups.manufacturer and ups.manufacturer != "—" %}{{ ups.manufacturer }} {% endif %}{{ ups.name }}
+    </div>
+  </div>
+
+  <div class="status-wrap">
+    <div class="status-pill status-{{ ups.status_class }}">{{ ups.status_label }}</div>
+  </div>
+
+  <div class="metrics-grid">
+    {% if plugin_settings.show_battery != "hide" %}
+    <div class="metric-card">
+      <div class="metric-label">Battery</div>
+      <div class="metric-value">{{ ups.battery_pct }}</div>
+    </div>
+    {% endif %} {% if plugin_settings.show_runtime != "hide" %}
+    <div class="metric-card">
+      <div class="metric-label">Runtime</div>
+      <div class="metric-value">{{ ups.runtime_pretty }}</div>
+    </div>
+    {% endif %} {% if plugin_settings.show_load != "hide" %}
+    <div class="metric-card">
+      <div class="metric-label">Load</div>
+      <div class="metric-value">{{ ups.load_pct }}</div>
+    </div>
+    {% endif %} {% if plugin_settings.show_input_voltage != "hide" %}
+    <div class="metric-card">
+      <div class="metric-label">Input</div>
+      <div class="metric-value">{{ ups.input_v }}</div>
+    </div>
+    {% endif %} {% if plugin_settings.show_output_voltage != "hide" %}
+    <div class="metric-card">
+      <div class="metric-label">Output</div>
+      <div class="metric-value">{{ ups.output_v }}</div>
+    </div>
+    {% endif %} {% if plugin_settings.show_battery_voltage != "hide" %}
+    <div class="metric-card">
+      <div class="metric-label">Battery V</div>
+      <div class="metric-value">{{ ups.battery_v }}</div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

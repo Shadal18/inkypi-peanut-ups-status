@@ -1,0 +1,113 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  box-sizing: border-box;
+}
+
+.ups-dashboard {
+  width: min(92vw, 820px);
+  font-family: "Jost", sans-serif;
+  color: #000;
+}
+
+.last-refresh {
+  text-align: right;
+  font-size: 0.8rem;
+  color: #666;
+  margin-bottom: 0.25rem;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+
+.title {
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: #333;
+  margin-top: 0.25rem;
+  font-weight: 600;
+}
+
+.status-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 0.45rem 0.9rem;
+  border: 2px solid #000;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+}
+
+.status-good {
+  background: #fff;
+  color: #000;
+}
+
+.status-warning {
+  background: #e9e9e9;
+  color: #000;
+}
+
+.status-danger {
+  background: #d9d9d9;
+  color: #000;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.metric-card {
+  border: 2px solid #000;
+  border-radius: 14px;
+  padding: 18px 16px;
+  background: #fff;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.metric-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.metric-value {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+@media (max-width: 520px) {
+  .metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

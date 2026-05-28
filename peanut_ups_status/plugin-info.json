@@ -1,0 +1,6 @@
+{
+  "display_name": "PeaNUT UPS Status",
+  "id": "peanut_ups_status",
+  "class": "PeaNUT",
+  "repository": "https://github.com/shadal18/inkypi-peanut-ups-status"
+}

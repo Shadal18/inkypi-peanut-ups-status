@@ -1,0 +1,185 @@
+<div class="form-group">
+  <label for="title" class="form-label">Header Text</label>
+  <input type="text" id="title" name="title" placeholder="UPS Status" class="form-input" />
+</div>
+
+<div class="form-group">
+  <label for="peanut_url" class="form-label">PeaNUT Device URL</label>
+  <input
+    type="text"
+    id="peanut_url"
+    name="peanut_url"
+    placeholder="http://docker-host.lan:8080/api/v1/devices/cyberups"
+    class="form-input"
+    required
+  />
+  <small>
+    Paste the PeaNUT device API URL for your UPS. Example:
+    <code>http://docker-host.lan:8080/api/v1/devices/cyberups</code>
+  </small>
+</div>
+
+<div class="form-group">
+  <label class="form-label">Display Options:</label>
+
+  <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px">
+    <div
+      class="form-group"
+      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+    >
+      <label for="show_battery_toggle" class="form-label" style="margin: 0">Battery</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="show_battery_toggle" class="toggle-checkbox" />
+        <label for="show_battery_toggle" class="toggle-label"></label>
+      </div>
+      <input type="hidden" id="show_battery" name="show_battery" value="show" />
+    </div>
+
+    <div
+      class="form-group"
+      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+    >
+      <label for="show_runtime_toggle" class="form-label" style="margin: 0">Runtime</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="show_runtime_toggle" class="toggle-checkbox" />
+        <label for="show_runtime_toggle" class="toggle-label"></label>
+      </div>
+      <input type="hidden" id="show_runtime" name="show_runtime" value="show" />
+    </div>
+
+    <div
+      class="form-group"
+      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+    >
+      <label for="show_load_toggle" class="form-label" style="margin: 0">Load</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="show_load_toggle" class="toggle-checkbox" />
+        <label for="show_load_toggle" class="toggle-label"></label>
+      </div>
+      <input type="hidden" id="show_load" name="show_load" value="show" />
+    </div>
+
+    <div
+      class="form-group"
+      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+    >
+      <label for="show_input_voltage_toggle" class="form-label" style="margin: 0">Input Voltage</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="show_input_voltage_toggle" class="toggle-checkbox" />
+        <label for="show_input_voltage_toggle" class="toggle-label"></label>
+      </div>
+      <input type="hidden" id="show_input_voltage" name="show_input_voltage" value="show" />
+    </div>
+
+    <div
+      class="form-group"
+      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+    >
+      <label for="show_output_voltage_toggle" class="form-label" style="margin: 0">Output Voltage</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="show_output_voltage_toggle" class="toggle-checkbox" />
+        <label for="show_output_voltage_toggle" class="toggle-label"></label>
+      </div>
+      <input type="hidden" id="show_output_voltage" name="show_output_voltage" value="show" />
+    </div>
+
+    <div
+      class="form-group"
+      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
+    >
+      <label for="show_battery_voltage_toggle" class="form-label" style="margin: 0">Battery Voltage</label>
+      <div class="toggle-container">
+        <input type="checkbox" id="show_battery_voltage_toggle" class="toggle-checkbox" />
+        <label for="show_battery_voltage_toggle" class="toggle-label"></label>
+      </div>
+      <input type="hidden" id="show_battery_voltage" name="show_battery_voltage" value="show" />
+    </div>
+  </div>
+</div>
+
+<hr style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.12); margin: 24px 0 18px" />
+
+<div class="form-group" style="margin-bottom: 20px">
+  <div
+    style="
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: #555;
+      margin-bottom: 10px;
+    "
+  >
+    Plugin Repository
+  </div>
+
+  <div style="background: #f8f9fa; border: 1px solid #dcdfe3; border-radius: 10px; padding: 14px 16px">
+    <a
+      href="https://github.com/shadal18/inkypi-peanut-ups-status"
+      target="_blank"
+      rel="noopener noreferrer"
+      style="
+        color: #0d6efd;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 1rem;
+        word-break: break-word;
+        display: inline-block;
+        margin-bottom: 6px;
+      "
+    >
+      github.com/shadal18/inkypi-peanut-ups-status
+    </a>
+
+    <div style="font-size: 0.9rem; color: #666">Setup help, updates, release notes, and source code.</div>
+  </div>
+</div>
+
+<script src="https://storage.ko-fi.com/cdn/scripts/overlay-widget.js"></script>
+<script>
+  function initToggle(settingName, defaultValue = "show") {
+    const hiddenInput = document.getElementById(settingName)
+    const toggle = document.getElementById(settingName + "_toggle")
+
+    let currentValue = defaultValue
+    if (typeof loadPluginSettings !== "undefined" && loadPluginSettings && pluginSettings[settingName] !== undefined) {
+      currentValue = pluginSettings[settingName]
+    }
+
+    const isShown = currentValue === "show"
+    hiddenInput.value = isShown ? "show" : "hide"
+    toggle.checked = isShown
+
+    toggle.addEventListener("change", () => {
+      hiddenInput.value = toggle.checked ? "show" : "hide"
+    })
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const title = document.getElementById("title")
+    const peanutUrl = document.getElementById("peanut_url")
+
+    if (typeof loadPluginSettings !== "undefined" && loadPluginSettings) {
+      if (title) title.value = pluginSettings.title || "UPS Status"
+      if (peanutUrl) peanutUrl.value = pluginSettings.peanut_url || ""
+    } else {
+      if (title) title.value = "UPS Status"
+    }
+
+    initToggle("show_battery", "show")
+    initToggle("show_runtime", "show")
+    initToggle("show_load", "show")
+    initToggle("show_input_voltage", "show")
+    initToggle("show_output_voltage", "show")
+    initToggle("show_battery_voltage", "show")
+
+    if (typeof kofiWidgetOverlay !== "undefined") {
+      kofiWidgetOverlay.draw("shadal", {
+        type: "floating-chat",
+        "floating-chat.donateButton.text": "More coffee",
+        "floating-chat.donateButton.background-color": "#00b9fe",
+        "floating-chat.donateButton.text-color": "#fff",
+      })
+    }
+  })
+</script>
