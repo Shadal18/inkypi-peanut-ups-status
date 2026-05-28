@@ -7,7 +7,7 @@ An plugin that shows UPS status information from a PeaNUT device endpoint on an 
 Use the InkyPi plugin installer with the plugin ID and this repository URL, following the install pattern shown by the official InkyPi plugin template.
 
 ```bash
-inkypi plugin install spoolman_active_spools https://github.com/shadal18/inkypi-peanut-ups-status
+inkypi plugin install peanut_ups_status https://github.com/shadal18/inkypi-peanut-ups-status
 ```
 
 ## Update
