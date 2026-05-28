@@ -1,6 +1,8 @@
 # inkypi-peanut-ups-status
 
-A PeaNUT-only UPS status plugin for InkyPi that displays battery charge, runtime, load, and voltage data from a PeaNUT device API endpoint.
+PeaNUT UPS Status plugin for InkyPi.
+
+This plugin displays UPS status information on an InkyPi display using a PeaNUT device API endpoint. It is a **PeaNUT-only** plugin, so the InkyPi device does not need the NUT client tools installed locally; PeaNUT handles the UPS data and exposes it over HTTP [web:3].
 
 ## Plugin details
 
@@ -10,25 +12,22 @@ A PeaNUT-only UPS status plugin for InkyPi that displays battery charge, runtime
 
 ## Features
 
-- Pulls live UPS data from a PeaNUT device endpoint
-- No NUT client installation required on the InkyPi device
-- Displays UPS status such as Online or On Battery
-- Shows battery percentage
-- Shows runtime remaining
-- Shows UPS load
-- Optional input voltage display
-- Optional output voltage display
-- Optional battery voltage display
+- Pulls live UPS data from a PeaNUT device API endpoint.
+- Displays UPS status such as Online or On Battery.
+- Shows battery percentage.
+- Shows runtime remaining.
+- Shows UPS load percentage.
+- Optionally shows input voltage.
+- Optionally shows output voltage.
+- Optionally shows battery voltage.
 
 ## Requirements
 
-- A working InkyPi installation with plugin support
-- A reachable PeaNUT instance on your network
-- A working PeaNUT device API endpoint for your UPS
+- A working InkyPi installation with plugin support.
+- A reachable PeaNUT instance on your network.
+- A working PeaNUT device endpoint for your UPS.
 
 ## Install
-
-Install the plugin using the InkyPi plugin installer:
 
 ```bash
 inkypi plugin install peanut_ups_status https://github.com/shadal18/inkypi-peanut-ups-status
@@ -36,21 +35,15 @@ inkypi plugin install peanut_ups_status https://github.com/shadal18/inkypi-peanu
 
 ## Update
 
-To update the plugin on your InkyPi device:
+```bash
+cd ~/InkyPi/src/plugins/peanut_ups_status
+git pull origin main
+sudo systemctl restart inkypi.service
+```
 
-1. SSH into your InkyPi host.
-2. Change into the plugin directory:
-   ```bash
-   cd ~/InkyPi/src/plugins/peanut_ups_status
-   ```
-3. Pull the latest changes and restart InkyPi:
-   ```bash
-   git pull origin main && sudo systemctl restart inkypi.service
-   ```
+## Configuration
 
-## Setup
-
-Open the plugin settings in InkyPi and enter your PeaNUT device API URL.
+Open the plugin settings in InkyPi and set the PeaNUT device URL.
 
 Example:
 
@@ -58,17 +51,17 @@ Example:
 http://docker-host.lan:8080/api/v1/devices/cyberups
 ```
 
-If your UPS is named `ups` in NUT/PeaNUT, the URL may look like:
+If your UPS device id is `ups`, the URL may look like this:
 
 ```text
 http://docker-host.lan:8080/api/v1/devices/ups
 ```
 
-The device portion of the URL is the UPS device identifier configured in NUT and exposed by PeaNUT [web:600][web:629].
+The device portion of the URL should match the UPS identifier exposed by PeaNUT for that device endpoint [web:3].
 
 ## Display options
 
-You can show or hide:
+You can show or hide the following fields:
 
 - Battery
 - Runtime
@@ -79,21 +72,33 @@ You can show or hide:
 
 ## Troubleshooting
 
-### Timeout while querying PeaNUT
+### Plugin does not load
 
-If the plugin times out, the InkyPi host likely cannot reach the PeaNUT server even if your desktop browser can.
+Restart the InkyPi service after installing or updating the plugin:
 
-Check connectivity from the InkyPi device:
+```bash
+sudo systemctl restart inkypi.service
+```
+
+InkyPi plugin registration uses `plugin-info.json` with `display_name`, `id`, and `class`, and the Python file should match the plugin directory name [web:3].
+
+### PeaNUT request timeout
+
+If the plugin times out, verify that the InkyPi device can reach the PeaNUT server over the network:
 
 ```bash
 curl -v http://docker-host.lan:8080/api/v1/devices/cyberups
 ```
 
-If hostname resolution is the issue, use the server IP instead of `docker-host.lan`.
+If hostname resolution fails, try using the server IP address instead of the hostname.
 
 ### Invalid JSON or empty response
 
-Open the PeaNUT device URL in a browser or with `curl` and verify that it returns UPS JSON data.
+Test the PeaNUT device URL directly in a browser or with `curl` and confirm that it returns JSON for a UPS device endpoint.
+
+### Wrong UPS shown
+
+Make sure the last path segment in the URL matches the correct PeaNUT device id for your UPS.
 
 ## Repository
 
