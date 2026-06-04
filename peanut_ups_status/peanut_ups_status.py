@@ -1,4 +1,4 @@
- from plugins.base_plugin.base_plugin import BasePlugin
+from plugins.base_plugin.base_plugin import BasePlugin
 import logging
 import requests
 from datetime import datetime
