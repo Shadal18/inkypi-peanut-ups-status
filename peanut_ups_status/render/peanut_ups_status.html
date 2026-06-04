@@ -1,78 +1,128 @@
 {% extends "plugin.html" %} {% block head %} {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/peanut_ups_status.css') }}" />
 {% endblock %} {% block content %}
-<div class="ups-screen">
+<div class="wp-block-group alignwide is-style-section-panel ups-panel-shell">
   {% if plugin_settings.displayRefreshTime == "true" %}
   <div class="refresh">Updated {{ last_refresh_time }}</div>
   {% endif %}
 
-  <header class="topbar">
-    <div class="title-block">
-      <div class="title">{{ title }}</div>
-      <div class="subtitle">
-        {% if ups.manufacturer and ups.manufacturer != "—" %}{{ ups.manufacturer }} {% endif %}{{ ups.name }}
+  <div class="ups-panel-flow">
+    <header class="ups-header">
+      <div class="ups-header-copy">
+        <div class="ups-kicker">UPS Overview</div>
+        <h2 class="ups-title">{{ title }}</h2>
+        <p class="ups-intro">
+          {% if ups.manufacturer and ups.manufacturer != "—" %}{{ ups.manufacturer }} {% endif %}{{ ups.name }} is
+          currently reporting <strong>{{ ups.status_label }}</strong>.
+        </p>
       </div>
-    </div>
 
-    <div class="status-chip status-{{ ups.status_class }}">{{ ups.status_label }}</div>
-  </header>
+      <div class="ups-status-chip status-{{ ups.status_class }}">
+        <span class="status-dot"></span>
+        <span>{{ ups.status_label }}</span>
+      </div>
+    </header>
 
-  <section class="main-grid">
-    <div class="battery-card">
-      <div class="section-label">Battery Charge</div>
+    <section class="ups-hero">
+      <div class="ups-battery-wrap">
+        <div class="ups-battery-card">
+          <div class="ups-card-label">Battery Charge</div>
 
-      <div class="battery-hero">
-        <div class="battery-shape">
-          <div class="battery-tip"></div>
-          <div
-            class="battery-fill battery-{{ ups.battery_class }}"
-            style="width: {{ ups.battery_percent_value }}%;"
-          ></div>
-          <div class="battery-percent">{{ ups.battery_pct }}</div>
+          <div class="battery-hero">
+            <div class="battery-shell">
+              <div class="battery-cap"></div>
+              <div class="battery-inner">
+                <div class="battery-grid"></div>
+                <div
+                  class="battery-fill battery-{{ ups.battery_class }}"
+                  style="width: {{ ups.battery_percent_value }}%;"
+                ></div>
+
+                <div class="battery-overlay">
+                  <div class="battery-percent">{{ ups.battery_pct }}</div>
+                  <div class="battery-subtext">{{ ups.status_label }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="battery-scale">
-        <span>0%</span>
-        <span>25</span>
-        <span>50</span>
-        <span>75</span>
-        <span>100%</span>
+      <div class="ups-feature-stack">
+        {% if plugin_settings.show_runtime != "hide" %}
+        <div class="ups-feature-card">
+          <div class="ups-feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="12" cy="12" r="8"></circle>
+              <path d="M12 8v5l3 2"></path>
+            </svg>
+          </div>
+          <div class="ups-feature-copy">
+            <div class="ups-card-label">Runtime Remaining</div>
+            <div class="ups-feature-value">{{ ups.runtime_pretty }}</div>
+          </div>
+        </div>
+        {% endif %} {% if plugin_settings.show_load != "hide" %}
+        <div class="ups-feature-card">
+          <div class="ups-feature-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 15a8 8 0 1 1 16 0"></path>
+              <path d="M12 15l4-4"></path>
+              <circle cx="12" cy="15" r="1.25"></circle>
+            </svg>
+          </div>
+          <div class="ups-feature-copy">
+            <div class="ups-card-label">UPS Load</div>
+            <div class="ups-feature-value">{{ ups.load_pct }}</div>
+          </div>
+        </div>
+        {% endif %}
       </div>
-    </div>
+    </section>
 
-    <div class="side-stack">
-      {% if plugin_settings.show_runtime != "hide" %}
-      <div class="info-card emphasis">
-        <div class="section-label">Runtime</div>
-        <div class="big-value">{{ ups.runtime_pretty }}</div>
+    <section class="ups-stat-grid">
+      {% if plugin_settings.show_input_voltage != "hide" %}
+      <div class="ups-stat-card">
+        <div class="ups-stat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M13 2L5 14h5l-1 8 8-12h-5l1-8z"></path>
+          </svg>
+        </div>
+        <div class="ups-stat-copy">
+          <span class="ups-stat-name">Input Voltage</span>
+          <span class="ups-stat-value">{{ ups.input_v }}</span>
+        </div>
       </div>
-      {% endif %} {% if plugin_settings.show_load != "hide" %}
-      <div class="info-card">
-        <div class="section-label">Load</div>
-        <div class="big-value">{{ ups.load_pct }}</div>
+      {% endif %} {% if plugin_settings.show_output_voltage != "hide" %}
+      <div class="ups-stat-card">
+        <div class="ups-stat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 12h18"></path>
+            <path d="M15 6l6 6-6 6"></path>
+          </svg>
+        </div>
+        <div class="ups-stat-copy">
+          <span class="ups-stat-name">Output Voltage</span>
+          <span class="ups-stat-value">{{ ups.output_v }}</span>
+        </div>
+      </div>
+      {% endif %} {% if plugin_settings.show_battery_voltage != "hide" %}
+      <div class="ups-stat-card">
+        <div class="ups-stat-icon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="4" y="7" width="14" height="10" rx="2"></rect>
+            <rect x="18" y="10" width="2" height="4" rx="1"></rect>
+            <path d="M9 10v4"></path>
+            <path d="M7 12h4"></path>
+          </svg>
+        </div>
+        <div class="ups-stat-copy">
+          <span class="ups-stat-name">Battery Voltage</span>
+          <span class="ups-stat-value">{{ ups.battery_v }}</span>
+        </div>
       </div>
       {% endif %}
-    </div>
-  </section>
-
-  <section class="stats-row">
-    {% if plugin_settings.show_input_voltage != "hide" %}
-    <div class="stat-pill">
-      <span class="stat-name">Input</span>
-      <span class="stat-value">{{ ups.input_v }}</span>
-    </div>
-    {% endif %} {% if plugin_settings.show_output_voltage != "hide" %}
-    <div class="stat-pill">
-      <span class="stat-name">Output</span>
-      <span class="stat-value">{{ ups.output_v }}</span>
-    </div>
-    {% endif %} {% if plugin_settings.show_battery_voltage != "hide" %}
-    <div class="stat-pill">
-      <span class="stat-name">Battery V</span>
-      <span class="stat-value">{{ ups.battery_v }}</span>
-    </div>
-    {% endif %}
-  </section>
+    </section>
+  </div>
 </div>
 {% endblock %}
