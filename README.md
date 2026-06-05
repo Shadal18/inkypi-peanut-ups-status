@@ -2,6 +2,8 @@
 
 An plugin that shows UPS status information from a PeaNUT device endpoint on an InkyPi display with a clean, glanceable layout and configurable display fields.
 
+_PeaNUT UPS Status_ is a plugin for [InkyPi](https://github.com/fatihak/InkyPi) that displays power and battery information from your PeaNUT UPS setup.
+
 ## Install
 
 Use the InkyPi plugin installer with the plugin ID and this repository URL, following the install pattern shown by the official InkyPi plugin template.
