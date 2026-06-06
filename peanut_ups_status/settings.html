@@ -256,8 +256,8 @@
 
   .pu-toggle-row {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    align-items: flex-start;
+    justify-content: flex-start;
     gap: 12px;
   }
 
@@ -266,15 +266,18 @@
     flex-direction: column;
     gap: 2px;
     min-width: 0;
+    order: 1;
   }
 
   .pu-toggle-control {
-    flex-shrink: 0;
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     justify-content: center;
     min-width: 24px;
     min-height: 24px;
+    padding-top: 2px;
+    order: 0;
   }
 
   .peanut-settings-container input[type="checkbox"],
@@ -449,12 +452,12 @@
         <div class="pu-toggle-grid">
           <div class="pu-toggle-card">
             <div class="pu-toggle-row">
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_battery_toggle" class="toggle-checkbox" />
+              </div>
               <div class="pu-toggle-text">
                 <div class="pu-toggle-title">Battery</div>
                 <div class="pu-toggle-copy">Show the battery charge percentage.</div>
-              </div>
-              <div class="pu-toggle-control">
-                <input type="checkbox" id="show_battery_toggle" class="toggle-checkbox" />
               </div>
             </div>
             <input type="hidden" id="show_battery" name="show_battery" value="show" />
@@ -462,12 +465,12 @@
 
           <div class="pu-toggle-card">
             <div class="pu-toggle-row">
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_runtime_toggle" class="toggle-checkbox" />
+              </div>
               <div class="pu-toggle-text">
                 <div class="pu-toggle-title">Runtime</div>
                 <div class="pu-toggle-copy">Show estimated remaining runtime.</div>
-              </div>
-              <div class="pu-toggle-control">
-                <input type="checkbox" id="show_runtime_toggle" class="toggle-checkbox" />
               </div>
             </div>
             <input type="hidden" id="show_runtime" name="show_runtime" value="show" />
@@ -475,12 +478,12 @@
 
           <div class="pu-toggle-card">
             <div class="pu-toggle-row">
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_load_toggle" class="toggle-checkbox" />
+              </div>
               <div class="pu-toggle-text">
                 <div class="pu-toggle-title">Load</div>
                 <div class="pu-toggle-copy">Show current UPS load percentage.</div>
-              </div>
-              <div class="pu-toggle-control">
-                <input type="checkbox" id="show_load_toggle" class="toggle-checkbox" />
               </div>
             </div>
             <input type="hidden" id="show_load" name="show_load" value="show" />
@@ -488,12 +491,12 @@
 
           <div class="pu-toggle-card">
             <div class="pu-toggle-row">
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_input_voltage_toggle" class="toggle-checkbox" />
+              </div>
               <div class="pu-toggle-text">
                 <div class="pu-toggle-title">Input Voltage</div>
                 <div class="pu-toggle-copy">Show the current input voltage.</div>
-              </div>
-              <div class="pu-toggle-control">
-                <input type="checkbox" id="show_input_voltage_toggle" class="toggle-checkbox" />
               </div>
             </div>
             <input type="hidden" id="show_input_voltage" name="show_input_voltage" value="show" />
@@ -501,12 +504,12 @@
 
           <div class="pu-toggle-card">
             <div class="pu-toggle-row">
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_output_voltage_toggle" class="toggle-checkbox" />
+              </div>
               <div class="pu-toggle-text">
                 <div class="pu-toggle-title">Output Voltage</div>
                 <div class="pu-toggle-copy">Show the current output voltage.</div>
-              </div>
-              <div class="pu-toggle-control">
-                <input type="checkbox" id="show_output_voltage_toggle" class="toggle-checkbox" />
               </div>
             </div>
             <input type="hidden" id="show_output_voltage" name="show_output_voltage" value="show" />
@@ -514,12 +517,12 @@
 
           <div class="pu-toggle-card">
             <div class="pu-toggle-row">
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_battery_voltage_toggle" class="toggle-checkbox" />
+              </div>
               <div class="pu-toggle-text">
                 <div class="pu-toggle-title">Battery Voltage</div>
                 <div class="pu-toggle-copy">Show the current battery voltage.</div>
-              </div>
-              <div class="pu-toggle-control">
-                <input type="checkbox" id="show_battery_voltage_toggle" class="toggle-checkbox" />
               </div>
             </div>
             <input type="hidden" id="show_battery_voltage" name="show_battery_voltage" value="show" />
