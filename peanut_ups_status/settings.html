@@ -1,137 +1,539 @@
-<div class="form-group">
-  <label for="title" class="form-label">Header Text</label>
-  <input type="text" id="title" name="title" placeholder="UPS Status" class="form-input" />
-</div>
+<style>
+  :root {
+    --pu-bg: var(--background-color, var(--color-background, #f5f7fb));
+    --pu-bg-soft: var(--card-background-secondary, var(--color-surface-2, #eef2f7));
+    --pu-panel: var(--card-background, var(--color-surface, #ffffff));
+    --pu-panel-2: var(--card-background-hover, var(--color-surface-2, #f8fafc));
+    --pu-border: var(--border-color, rgba(15, 23, 42, 0.12));
+    --pu-text: var(--text-primary, var(--color-text, #0f172a));
+    --pu-text-muted: var(--text-secondary, var(--color-text-secondary, #475569));
+    --pu-text-soft: var(--text-muted, #64748b);
+    --pu-primary: var(--accent-color, #14b8a6);
+    --pu-info: var(--info-color, #3b82f6);
+    --pu-shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --pu-radius-xl: 18px;
+    --pu-radius-lg: 14px;
+  }
 
-<div class="form-group">
-  <label for="peanut_url" class="form-label">PeaNUT Device URL</label>
-  <input
-    type="text"
-    id="peanut_url"
-    name="peanut_url"
-    placeholder="http://peanut-host.local:8080/api/v1/devices/cyberups"
-    class="form-input"
-    required
-  />
-  <small>
-    Paste the PeaNUT device API URL for your UPS. Example:
-    <code>http://peanut-host.local:8080/api/v1/devices/cyberups</code>
-  </small>
-</div>
+  html.dark,
+  body.dark,
+  [data-theme="dark"],
+  html[data-theme="dark"] {
+    --pu-bg: var(--background-color, var(--color-background, #0f172a));
+    --pu-bg-soft: var(--card-background-secondary, var(--color-surface-2, #162033));
+    --pu-panel: var(--card-background, var(--color-surface, #111827));
+    --pu-panel-2: var(--card-background-hover, var(--color-surface-2, #172033));
+    --pu-border: var(--border-color, rgba(255, 255, 255, 0.1));
+    --pu-text: var(--text-primary, var(--color-text, #f8fafc));
+    --pu-text-muted: var(--text-secondary, var(--color-text-secondary, #cbd5e1));
+    --pu-text-soft: var(--text-muted, #94a3b8);
+    --pu-shadow-sm: 0 10px 28px rgba(0, 0, 0, 0.22);
+  }
 
-<div class="form-group">
-  <label class="form-label">Display Options:</label>
+  .peanut-settings-container {
+    width: 100%;
+    box-sizing: border-box;
+    color: var(--pu-text);
+  }
 
-  <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 8px">
-    <div
-      class="form-group"
-      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-    >
-      <label for="show_battery_toggle" class="form-label" style="margin: 0">Battery</label>
-      <div class="toggle-container">
-        <input type="checkbox" id="show_battery_toggle" class="toggle-checkbox" />
-        <label for="show_battery_toggle" class="toggle-label"></label>
+  .pu-shell {
+    display: grid;
+    gap: 18px;
+    margin-top: 8px;
+  }
+
+  .pu-hero {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--pu-radius-xl);
+    border: 1px solid var(--pu-border);
+    background:
+      radial-gradient(circle at top right, color-mix(in srgb, var(--pu-primary) 16%, transparent), transparent 34%),
+      radial-gradient(circle at bottom left, color-mix(in srgb, var(--pu-info) 12%, transparent), transparent 30%),
+      linear-gradient(180deg, color-mix(in srgb, var(--pu-panel) 92%, var(--pu-bg-soft) 8%), var(--pu-panel-2));
+    box-shadow: var(--pu-shadow-sm);
+    padding: 22px 22px 18px;
+  }
+
+  .pu-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--pu-primary) 14%, transparent);
+    color: var(--pu-primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    border: 1px solid color-mix(in srgb, var(--pu-primary) 22%, transparent);
+  }
+
+  .pu-hero h2 {
+    margin: 0;
+    color: var(--pu-text);
+    font-size: 28px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .pu-hero p {
+    margin: 10px 0 0;
+    max-width: 68ch;
+    color: var(--pu-text-muted);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .pu-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 18px;
+  }
+
+  .pu-metric {
+    border: 1px solid var(--pu-border);
+    border-radius: var(--pu-radius-lg);
+    background: color-mix(in srgb, var(--pu-panel) 92%, var(--pu-bg) 8%);
+    padding: 14px 14px 12px;
+    min-width: 0;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 22%, transparent);
+  }
+
+  .pu-metric-label {
+    color: var(--pu-text-soft);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .pu-metric-value {
+    color: var(--pu-text);
+    font-size: 28px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .pu-metric-sub {
+    color: var(--pu-text-muted);
+    font-size: 12px;
+    margin-top: 6px;
+  }
+
+  .pu-section,
+  .pu-link-card {
+    border: 1px solid var(--pu-border);
+    border-radius: var(--pu-radius-xl);
+    background: linear-gradient(180deg, var(--pu-panel), var(--pu-panel-2));
+    box-shadow: var(--pu-shadow-sm);
+    overflow: hidden;
+  }
+
+  .pu-section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--pu-border);
+  }
+
+  .pu-section-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    border: 1px solid var(--pu-border);
+    background: color-mix(in srgb, var(--pu-bg-soft) 65%, var(--pu-panel) 35%);
+  }
+
+  .pu-section-copy {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .pu-section-title {
+    color: var(--pu-text);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .pu-section-subtitle {
+    color: var(--pu-text-muted);
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .pu-section-body {
+    padding: 18px 20px 20px;
+  }
+
+  .pu-grid {
+    display: grid;
+    gap: 16px;
+  }
+
+  .pu-field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .pu-label {
+    color: var(--pu-text-soft);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .pu-input,
+  .peanut-settings-container input[type="text"] {
+    width: 100%;
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 12px;
+    border: 1px solid var(--pu-border);
+    background: var(--pu-panel);
+    color: var(--pu-text);
+    outline: none;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 14%, transparent);
+  }
+
+  .pu-input::placeholder,
+  .peanut-settings-container input::placeholder {
+    color: var(--pu-text-soft);
+    opacity: 1;
+  }
+
+  .pu-input:focus,
+  .peanut-settings-container input:focus {
+    border-color: color-mix(in srgb, var(--pu-primary) 45%, transparent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--pu-primary) 14%, transparent);
+  }
+
+  .pu-note {
+    margin: 0;
+    color: var(--pu-text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .pu-note code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.95em;
+  }
+
+  .pu-toggle-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .pu-toggle-card {
+    border: 1px solid var(--pu-border);
+    border-radius: var(--pu-radius-lg);
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--pu-panel) 96%, #fff 4%),
+      color-mix(in srgb, var(--pu-panel-2) 96%, var(--pu-bg) 4%)
+    );
+    padding: 14px;
+    box-shadow: 0 1px 0 color-mix(in srgb, #fff 16%, transparent);
+    color: var(--pu-text);
+  }
+
+  .pu-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .pu-toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .pu-toggle-control {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .peanut-settings-container input[type="checkbox"],
+  .pu-toggle-card input[type="checkbox"],
+  .toggle-checkbox {
+    appearance: auto !important;
+    -webkit-appearance: checkbox !important;
+    -moz-appearance: checkbox !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: static !important;
+    pointer-events: auto !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    accent-color: var(--pu-primary);
+    cursor: pointer !important;
+    box-shadow: none !important;
+    min-height: 18px !important;
+    padding: 0 !important;
+    border: initial !important;
+    background: initial !important;
+  }
+
+  .pu-toggle-title {
+    color: var(--pu-text);
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0 0 4px;
+  }
+
+  .pu-toggle-copy {
+    color: var(--pu-text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .pu-link-card {
+    padding: 16px 20px;
+  }
+
+  .pu-link-card a {
+    color: var(--pu-primary);
+    text-decoration: none;
+    font-weight: 700;
+    word-break: break-word;
+  }
+
+  .pu-link-card a:hover,
+  .pu-link-card a:focus-visible {
+    text-decoration: underline;
+    outline: none;
+  }
+
+  .pu-link-help {
+    margin-top: 8px;
+    color: var(--pu-text-muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .floatingchat-container-wrap,
+  .floatingchat-container-wrap-mobi {
+    left: unset !important;
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+
+  .floating-chat-kofi-popup-iframe {
+    left: unset !important;
+    right: 16px !important;
+    bottom: 76px !important;
+  }
+
+  @media (max-width: 920px) {
+    .pu-metrics {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .pu-hero {
+      padding: 18px;
+    }
+
+    .pu-hero h2 {
+      font-size: 22px;
+    }
+
+    .pu-section-header {
+      padding: 16px;
+    }
+
+    .pu-section-body,
+    .pu-link-card {
+      padding: 16px;
+    }
+  }
+</style>
+
+<div class="peanut-settings-container">
+  <div class="pu-shell">
+    <section class="pu-hero">
+      <div class="pu-eyebrow">PeaNUT</div>
+      <h2>Monitor your UPS status from a PeaNUT device API endpoint.</h2>
+      <p>Set the device URL, customize the header text, and choose which UPS metrics appear on the display.</p>
+
+      <div class="pu-metrics">
+        <div class="pu-metric">
+          <div class="pu-metric-label">Source</div>
+          <div class="pu-metric-value">PeaNUT</div>
+          <div class="pu-metric-sub">UPS device API endpoint</div>
+        </div>
+        <div class="pu-metric">
+          <div class="pu-metric-label">Display</div>
+          <div class="pu-metric-value">Status</div>
+          <div class="pu-metric-sub">Battery, load, voltage, and runtime</div>
+        </div>
+        <div class="pu-metric">
+          <div class="pu-metric-label">Controls</div>
+          <div class="pu-metric-value">6</div>
+          <div class="pu-metric-sub">Selectable UPS details</div>
+        </div>
       </div>
-      <input type="hidden" id="show_battery" name="show_battery" value="show" />
-    </div>
+    </section>
 
-    <div
-      class="form-group"
-      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-    >
-      <label for="show_runtime_toggle" class="form-label" style="margin: 0">Runtime</label>
-      <div class="toggle-container">
-        <input type="checkbox" id="show_runtime_toggle" class="toggle-checkbox" />
-        <label for="show_runtime_toggle" class="toggle-label"></label>
+    <section class="pu-section">
+      <div class="pu-section-header">
+        <span class="pu-section-icon" aria-hidden="true">🔌</span>
+        <div class="pu-section-copy">
+          <div class="pu-section-title">Connection settings</div>
+          <div class="pu-section-subtitle">Point the plugin at your PeaNUT UPS device endpoint.</div>
+        </div>
       </div>
-      <input type="hidden" id="show_runtime" name="show_runtime" value="show" />
-    </div>
+      <div class="pu-section-body">
+        <div class="pu-grid">
+          <div class="pu-field">
+            <label for="title" class="pu-label">Header text</label>
+            <input type="text" id="title" name="title" placeholder="UPS Status" class="pu-input" />
+          </div>
 
-    <div
-      class="form-group"
-      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-    >
-      <label for="show_load_toggle" class="form-label" style="margin: 0">Load</label>
-      <div class="toggle-container">
-        <input type="checkbox" id="show_load_toggle" class="toggle-checkbox" />
-        <label for="show_load_toggle" class="toggle-label"></label>
+          <div class="pu-field">
+            <label for="peanut_url" class="pu-label">PeaNUT Device URL</label>
+            <input
+              type="text"
+              id="peanut_url"
+              name="peanut_url"
+              placeholder="http://peanut-host.local:8080/api/v1/devices/cyberups"
+              class="pu-input"
+              required
+            />
+            <p class="pu-note">
+              Paste the PeaNUT device API URL for your UPS. Example:
+              <code>http://peanut-host.local:8080/api/v1/devices/cyberups</code>
+            </p>
+          </div>
+        </div>
       </div>
-      <input type="hidden" id="show_load" name="show_load" value="show" />
-    </div>
+    </section>
 
-    <div
-      class="form-group"
-      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-    >
-      <label for="show_input_voltage_toggle" class="form-label" style="margin: 0">Input Voltage</label>
-      <div class="toggle-container">
-        <input type="checkbox" id="show_input_voltage_toggle" class="toggle-checkbox" />
-        <label for="show_input_voltage_toggle" class="toggle-label"></label>
+    <section class="pu-section">
+      <div class="pu-section-header">
+        <span class="pu-section-icon" aria-hidden="true">📊</span>
+        <div class="pu-section-copy">
+          <div class="pu-section-title">Display options</div>
+          <div class="pu-section-subtitle">Choose which UPS details appear on the rendered display.</div>
+        </div>
       </div>
-      <input type="hidden" id="show_input_voltage" name="show_input_voltage" value="show" />
-    </div>
+      <div class="pu-section-body">
+        <div class="pu-toggle-grid">
+          <div class="pu-toggle-card">
+            <div class="pu-toggle-row">
+              <div class="pu-toggle-text">
+                <div class="pu-toggle-title">Battery</div>
+                <div class="pu-toggle-copy">Show the battery charge percentage.</div>
+              </div>
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_battery_toggle" class="toggle-checkbox" />
+              </div>
+            </div>
+            <input type="hidden" id="show_battery" name="show_battery" value="show" />
+          </div>
 
-    <div
-      class="form-group"
-      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-    >
-      <label for="show_output_voltage_toggle" class="form-label" style="margin: 0">Output Voltage</label>
-      <div class="toggle-container">
-        <input type="checkbox" id="show_output_voltage_toggle" class="toggle-checkbox" />
-        <label for="show_output_voltage_toggle" class="toggle-label"></label>
+          <div class="pu-toggle-card">
+            <div class="pu-toggle-row">
+              <div class="pu-toggle-text">
+                <div class="pu-toggle-title">Runtime</div>
+                <div class="pu-toggle-copy">Show estimated remaining runtime.</div>
+              </div>
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_runtime_toggle" class="toggle-checkbox" />
+              </div>
+            </div>
+            <input type="hidden" id="show_runtime" name="show_runtime" value="show" />
+          </div>
+
+          <div class="pu-toggle-card">
+            <div class="pu-toggle-row">
+              <div class="pu-toggle-text">
+                <div class="pu-toggle-title">Load</div>
+                <div class="pu-toggle-copy">Show current UPS load percentage.</div>
+              </div>
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_load_toggle" class="toggle-checkbox" />
+              </div>
+            </div>
+            <input type="hidden" id="show_load" name="show_load" value="show" />
+          </div>
+
+          <div class="pu-toggle-card">
+            <div class="pu-toggle-row">
+              <div class="pu-toggle-text">
+                <div class="pu-toggle-title">Input Voltage</div>
+                <div class="pu-toggle-copy">Show the current input voltage.</div>
+              </div>
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_input_voltage_toggle" class="toggle-checkbox" />
+              </div>
+            </div>
+            <input type="hidden" id="show_input_voltage" name="show_input_voltage" value="show" />
+          </div>
+
+          <div class="pu-toggle-card">
+            <div class="pu-toggle-row">
+              <div class="pu-toggle-text">
+                <div class="pu-toggle-title">Output Voltage</div>
+                <div class="pu-toggle-copy">Show the current output voltage.</div>
+              </div>
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_output_voltage_toggle" class="toggle-checkbox" />
+              </div>
+            </div>
+            <input type="hidden" id="show_output_voltage" name="show_output_voltage" value="show" />
+          </div>
+
+          <div class="pu-toggle-card">
+            <div class="pu-toggle-row">
+              <div class="pu-toggle-text">
+                <div class="pu-toggle-title">Battery Voltage</div>
+                <div class="pu-toggle-copy">Show the current battery voltage.</div>
+              </div>
+              <div class="pu-toggle-control">
+                <input type="checkbox" id="show_battery_voltage_toggle" class="toggle-checkbox" />
+              </div>
+            </div>
+            <input type="hidden" id="show_battery_voltage" name="show_battery_voltage" value="show" />
+          </div>
+        </div>
       </div>
-      <input type="hidden" id="show_output_voltage" name="show_output_voltage" value="show" />
-    </div>
+    </section>
 
-    <div
-      class="form-group"
-      style="display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0"
-    >
-      <label for="show_battery_voltage_toggle" class="form-label" style="margin: 0">Battery Voltage</label>
-      <div class="toggle-container">
-        <input type="checkbox" id="show_battery_voltage_toggle" class="toggle-checkbox" />
-        <label for="show_battery_voltage_toggle" class="toggle-label"></label>
-      </div>
-      <input type="hidden" id="show_battery_voltage" name="show_battery_voltage" value="show" />
-    </div>
-  </div>
-</div>
-
-<hr style="border: 0; border-top: 1px solid rgba(0, 0, 0, 0.12); margin: 24px 0 18px" />
-
-<div class="form-group" style="margin-bottom: 20px">
-  <div
-    style="
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: #555;
-      margin-bottom: 10px;
-    "
-  >
-    Plugin Repository
-  </div>
-
-  <div style="background: #f8f9fa; border: 1px solid #dcdfe3; border-radius: 10px; padding: 14px 16px">
-    <a
-      href="https://github.com/shadal18/inkypi-peanut-ups-status"
-      target="_blank"
-      rel="noopener noreferrer"
-      style="
-        color: #0d6efd;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1rem;
-        word-break: break-word;
-        display: inline-block;
-        margin-bottom: 6px;
-      "
-    >
-      github.com/shadal18/inkypi-peanut-ups-status
-    </a>
-
-    <div style="font-size: 0.9rem; color: #666">Setup help, updates, release notes, and source code.</div>
+    <section class="pu-link-card">
+      <a href="https://github.com/shadal18/inkypi-peanut-ups-status" target="_blank" rel="noopener noreferrer">
+        github.com/shadal18/inkypi-peanut-ups-status
+      </a>
+      <div class="pu-link-help">Setup help, updates, release notes, and source code.</div>
+    </section>
   </div>
 </div>
 
@@ -141,8 +543,16 @@
     const hiddenInput = document.getElementById(settingName)
     const toggle = document.getElementById(settingName + "_toggle")
 
+    if (!hiddenInput || !toggle) return
+
     let currentValue = defaultValue
-    if (typeof loadPluginSettings !== "undefined" && loadPluginSettings && pluginSettings[settingName] !== undefined) {
+    if (
+      typeof loadPluginSettings !== "undefined" &&
+      loadPluginSettings &&
+      typeof pluginSettings !== "undefined" &&
+      pluginSettings &&
+      pluginSettings[settingName] !== undefined
+    ) {
       currentValue = pluginSettings[settingName]
     }
 
@@ -159,11 +569,17 @@
     const title = document.getElementById("title")
     const peanutUrl = document.getElementById("peanut_url")
 
-    if (typeof loadPluginSettings !== "undefined" && loadPluginSettings) {
+    if (
+      typeof loadPluginSettings !== "undefined" &&
+      loadPluginSettings &&
+      typeof pluginSettings !== "undefined" &&
+      pluginSettings
+    ) {
       if (title) title.value = pluginSettings.title || "UPS Status"
       if (peanutUrl) peanutUrl.value = pluginSettings.peanut_url || ""
     } else {
       if (title) title.value = "UPS Status"
+      if (peanutUrl) peanutUrl.value = ""
     }
 
     initToggle("show_battery", "show")

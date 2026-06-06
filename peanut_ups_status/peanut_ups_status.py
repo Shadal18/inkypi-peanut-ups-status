@@ -3,7 +3,6 @@ import logging
 import requests
 from datetime import datetime
 
-
 logger = logging.getLogger(__name__)
 
 
